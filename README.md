@@ -9,6 +9,7 @@ Features:
 - Add command line support 
 - Add support to merge csv files
 - Add support to merge excel files
+- Convert between csv and excel files (and vice versa)
 - Download files from the internet
 - Add files to database
 - Create file report (basic info)
