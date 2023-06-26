@@ -5,7 +5,7 @@ Tool for file manipulation.
 Features:
 - [x] Merge 2 text files
 - [x] Refactor code to be more useful
-- Add basic support to merge multiple files
+- [x] Add basic support to merge multiple files
 - Add command line support 
 - Add support to merge csv files
 - Add support to merge excel files
