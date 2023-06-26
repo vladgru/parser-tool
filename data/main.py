@@ -1,9 +1,19 @@
 print("Hello")
 
-file_one = "data/file_a.txt"
-file_two = "data/file_b.txt"
+import os
+
+data_folder_name = "data"
 final_merged_file = "data/merged_file.txt"
 remove_empty_lines = True
+
+
+def get_absolute_file_paths(folder_name):
+    absolute_paths = []
+    for dirpath, _, filenames in os.walk(folder_name):
+        for filename in filenames:
+            absolute_path = os.path.abspath(os.path.join(dirpath, filename))
+            absolute_paths.append(absolute_path)
+    return absolute_paths
 
 
 def read_text_file_to_list(file_path: str) -> list[str]:
@@ -30,12 +40,12 @@ def writ_list_to_text_file(file_data: list[str], file_path: str) -> None:
 
 # združimo obe datoteke in jih shranimo n+ v novo datoteko imenova skupni.txt
 
-file_a_data = read_text_file_to_list(file_one)
-file_b_data = read_text_file_to_list(file_two)
-
-# merge files
-
-merged_list = file_a_data + file_b_data
+all_files_paths = get_absolute_file_paths(data_folder_name)
+merged_list = []
+for path in all_files_paths:
+    file_data = read_text_file_to_list(path)
+    merged_list += file_data
+print(all_files_paths)
 
 # remove new line characters
 
