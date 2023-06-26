@@ -3,7 +3,7 @@
 Tool for file manipulation.
 
 Features:
-- Merge 2 text files
+- [x]Merge 2 text files
 - Refactor code to be more useful
 - Add basic support to merge multiple files
 - Add command line support 
