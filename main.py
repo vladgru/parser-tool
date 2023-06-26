@@ -1,9 +1,7 @@
-print("Hello")
-
 import os
 
 data_folder_name = "data"
-final_merged_file = "data/merged_file.txt"
+final_merged_file = "merged_file.txt"
 remove_empty_lines = True
 
 
