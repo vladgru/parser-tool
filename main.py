@@ -10,43 +10,50 @@ Options:
     --remove-empty-lines        Remove empty lines from merged file (optional). Default: False.
 """
 
-import fnmatch
 import os
 import sys
+
+from file_helpers import (
+    get_absolute_file_paths,
+    read_text_file_to_list,
+    validate_folder_path,
+    write_list_to_text_file,
+)
 
 # TODO: If not arguments are provided, ask user for input and output paths.
 
 
 def parse_arguments_input_path(arguments: list[str]) -> str:
     """Parses input path from arguments."""
-    pass
+    for argument in arguments:
+        if argument.startswith("--input-path="):
+            input_path = argument.split("--input-path=")[1]
+            return input_path
+
+    print("Argument --input-path= not provided. Please use it.")
+    path = input("Enter input path: ")
+    return path
 
 
 def parse_arguments_output_path(arguments: list[str]) -> str:
     """Parses output path from arguments."""
-    pass
+    for argument in arguments:
+        if argument.startswith("--output-path="):
+            input_path = argument.split("--output-path=")[1]
+            return input_path
+
+    print(
+        "Argument --output-path= not provided. Default value will be used (merged.txt)."
+    )
+    return "merged.txt"
 
 
 def parse_arguments_remove_empty_lines(arguments: list[str]) -> bool:
     """Parses remove empty lines from arguments."""
-    pass
-
-
-def get_absolute_file_paths(folder_name: str, filter: str = "*") -> list[str]:
-    absolute_paths = []
-    for dirpath, _, filenames in os.walk(folder_name):
-        for filename in filenames:
-            if fnmatch.fnmatch(filename, filter):
-                absolute_path = os.path.abspath(os.path.join(dirpath, filename))
-                absolute_paths.append(absolute_path)
-    return absolute_paths
-
-
-def read_text_file_to_list(file_path: str) -> list[str]:
-    """Reads text file and returns list of lines."""
-    with open(file_path, "r") as file:
-        file_data = file.readlines()
-    return file_data
+    for argument in arguments:
+        if argument == "--remove-empty-lines":
+            return True
+    return False
 
 
 def strip_new_line_characters(file_data: list[str]) -> list[str]:
@@ -57,24 +64,20 @@ def remove_empty_lines_from_list(file_data: list[str]) -> list[str]:
     return [line for line in file_data if line != ""]
 
 
-def write_list_to_text_file(file_data: list[str], file_path: str) -> None:
-    with open(file_path, "w") as file:
-        for line in file_data:
-            file.write(line + "\n")
-
-
 def split_input_path(input_path: str) -> tuple[str, str]:
     """Splits input path into folder path and filter."""
-    # Input: data/reports/repo_22_06*
-    # Output: (data/reports, repo_22_06*)
-
-    pass
+    dir_name, file_name = os.path.split(input_path)
+    if not os.path.exists(dir_name):
+        print(f"Directory {dir_name} does not exist. Exiting...")
+        sys.exit(1)
+    return dir_name, file_name
 
 
 def main():
     # Parse arguments
     input_path = parse_arguments_input_path(sys.argv)
     output_path = parse_arguments_output_path(sys.argv)
+    validate_folder_path(output_path)
     remove_empty_lines = parse_arguments_remove_empty_lines(sys.argv)
     data_folder_name, filter_file_name = split_input_path(input_path)
 
@@ -96,3 +99,7 @@ def main():
     write_list_to_text_file(file_path=output_path, file_data=merged_list)
 
     print("Done!")
+
+
+print("Start...")
+main()
